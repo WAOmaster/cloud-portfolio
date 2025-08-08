@@ -1,78 +1,71 @@
 # Sashi Perera — Cloud Architecture Portfolio
 
-![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-blue?logo=linkedin&logoColor=white) [LinkedIn](https://www.linkedin.com/in/sashiperera/)  
-![Credly](https://img.shields.io/badge/Credly-Badges-4c1?logo=credly&logoColor=white) [Credly](https://www.credly.com/users/sashi-perera.35c7414d/badges#credly)
+**Repo purpose:** A compact, copy-paste-ready portfolio showcasing three high-signal projects you can share on LinkedIn or in job applications:
+1. GCP Landing Zone (Terraform) — modular IaC for secure, repeatable environments.
+2. Multi-Cloud Demo (GCP + OCI) — sample app deployed across two clouds with centralized CI/CD.
+3. GenAI Inference on GKE — lightweight PoC showing GenAI inference with autoscaling and cost controls.
 
----
-## Overview
+## How to use
+1. Replace placeholders (project IDs, bucket names, OCI compartment OCIDs) with your values.
+2. Fill in real Terraform variables and providers.
+3. Push this repo to GitHub and use the `Featured` section on LinkedIn to link the repo.
 
-This repository is a compact, high-signal portfolio showcasing practical cloud architecture work you can demo to hiring managers, recruiters, and technical leads.
+## Projects overview
 
-**Why this matters:** recruiters don't care about degrees — they care about outcomes. This repo proves you can design secure landing zones, run multi-cloud demos, and deploy GenAI proof-of-concepts with production-aware controls.
+### 1) GCP Landing Zone (Terraform)
+- Location: `landing-zone/`
+- What it contains: modular Terraform layout (modules for vpc, iam, logging), an example backend config and CI trigger.
+- Quick arch (Mermaid):
+```mermaid
+graph TD
+  A[User / CI] -->|Terraform Apply| B[Remote State Bucket]
+  A --> C(VPC Module)
+  A --> D(IAM Module)
+  A --> E(Logging & Monitoring)
+  C --> F(GKE Cluster)
+  D --> F
+```
+- Quick start:
+  ```bash
+  cd landing-zone
+  terraform init
+  terraform plan -var 'project_id=<GCP_PROJECT_ID>'
+  terraform apply -var 'project_id=<GCP_PROJECT_ID>'
+  ```
 
-**What's included**
-- `landing-zone/` — Modular Terraform skeleton for a GCP landing zone (VPC, IAM, logging/monitoring). Designed for repeatable, secure environment provisioning.
-- `multi-cloud-demo/` — Tiny Flask app + Dockerfile + Kubernetes manifest to demonstrate deployment to multiple clouds (GKE / OKE).
-- `genai-poc/` — Lightweight GenAI inference PoC (mocked endpoint) with deployment notes for safe, cost-aware operation.
-- `cloudbuild.yaml` — Example Cloud Build pipeline (build, push, deploy).
-- `portfolio-readme.md` — One‑page summary ideal for GitHub Featured or LinkedIn posts.
-
----
-## Quickstart (what recruiters want to see fast)
-
-1. **Clone**
-```bash
-git clone <your-github-repo-url>
-cd sashi-cloud-portfolio
+### 2) Multi-Cloud Demo (GCP + OCI)
+- Location: `multi-cloud-demo/`
+- Minimal app + deployment manifests for both GCP (GKE) and OCI (OKE or compute) to demonstrate cross-cloud deployment and CI pipeline.
+- Diagram:
+```mermaid
+graph LR
+  A[CI/CD] --> B[GCP - GKE]
+  A --> C[OCI - OKE]
+  B --> D[Stackdriver/Prometheus]
+  C --> D
 ```
 
-2. **Showcase (local demo)**
-- Run the multi-cloud demo app locally:
+### 3) GenAI Inference on GKE
+- Location: `genai-poc/`
+- Lightweight inference service (Flask) containerized and deployed to GKE with autoscaling and request queueing pattern.
+- Notes about safety, cost controls, and token limits are included.
+
+## Files of interest
+- `landing-zone/` — Terraform skeleton and modules
+- `multi-cloud-demo/` — simple app, Dockerfile, Kubernetes manifests
+- `genai-poc/` — Flask inference PoC and deployment hints
+- `cloudbuild.yaml` — sample Cloud Build pipeline to build and push images & deploy.
+- `README.md` (this file) — customize and push as public portfolio.
+
+## Suggested commit message
+`chore: add cloud-portfolio skeleton (GCP landing zone, multi-cloud demo, GenAI PoC)`
+
+## Push to GitHub (example)
 ```bash
-# from multi-cloud-demo/app
-python -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-python main.py
-# Visit http://localhost:8080
+git init
+git add .
+git commit -m "chore: add cloud-portfolio skeleton (GCP landing zone, multi-cloud demo, GenAI PoC)"
+gh repo create sashi-cloud-portfolio --public --source=. --remote=origin
+git push -u origin main
 ```
-
-3. **Infrastructure (preview)**
-- The `landing-zone/` contains modular Terraform code. Replace placeholders and run:
-```bash
-cd landing-zone
-terraform init
-terraform plan -var 'project_id=<GCP_PROJECT_ID>'
-```
-
-4. **Push images & deploy**
-- Use `cloudbuild.yaml` (or GitHub Actions) to build and push the container image, then apply the `multi-cloud-demo/k8s-deployment.yaml` to a Kubernetes cluster.
-
----
-## Project highlights (copy-paste for LinkedIn / resume)
-
-**GCP Landing Zone (Terraform)** — modular IaC for VPC, IAM, logging, with example backend and CI trigger. Ready to extend for Shared VPC, service perimeter, and centralized logging.  
-**Multi-Cloud Demo (GCP + OCI)** — identical app deployed across two clusters; demonstrates CI-driven deployments and centralized monitoring. Use this to show a technical lead you can avoid vendor lock-in.  
-**GenAI Inference PoC** — pattern for serving inference safely: request queueing, autoscaling, secrets in Secret Manager/KMS, and explicit cost throttles (max replicas, queue depth limits).
-
----
-## How to present this in interviews
-- Link the repo in your LinkedIn Featured section. Recruiters click Featured first — make it easy.  
-- For each interview, open the `landing-zone/main.tf` and explain choices: remote state, module boundaries, IAM binding patterns.  
-- Show the `multi-cloud-demo` running locally or in a small cloud cluster and explain CI → build → deploy flow.  
-- For GenAI topics, explain safety and cost controls: do not include model weights; use hosted endpoints or private model serving.
-
----
-## Replace these placeholders before pushing live
-- `landing-zone/main.tf` → `<REPLACE_WITH_STATE_BUCKET>`
-- `multi-cloud-demo/k8s-deployment.yaml` → `<PROJECT_ID>` in image path
-- `cloudbuild.yaml` → ensure `$PROJECT_ID` matches your GCP project
-
----
-## Contact & social
-**Sashi Perera** — Cloud Architect  
-LinkedIn: https://www.linkedin.com/in/sashiperera/ · Credly: https://www.credly.com/users/sashi-perera.35c7414d/badges#credly · Email: <your-email>
-
----
-## License
-MIT © 2025 Sashi Perera
+(If you don't have `gh`, create a repo in the GitHub UI and follow the push instructions.)
