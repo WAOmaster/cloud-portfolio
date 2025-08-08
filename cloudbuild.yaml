@@ -1,0 +1,6 @@
+steps:
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-t', 'gcr.io/abiding-casing-461520-j8/cloud-portfolio-app:latest', './multi-cloud-demo/app']
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['push', 'gcr.io/abiding-casing-461520-j8/cloud-portfolio-app:latest']
+# Add steps to deploy to GKE, or trigger a workflow that runs kubectl apply

@@ -1,0 +1,12 @@
+.terraform
+.terraform.tfstate
+.terraform.tfstate.backup
+.vscode
+.idea
+*.tfvars
+*.zip
+.DS_Store
+*/.terraform
+node_modules
+.pytest_cache
+__pycache__
